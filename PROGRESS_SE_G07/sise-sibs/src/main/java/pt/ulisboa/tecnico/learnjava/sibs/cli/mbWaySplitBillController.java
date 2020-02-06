@@ -39,28 +39,26 @@ public class mbWaySplitBillController {
 
 	public void mbwaySplitBill(String numberOfFriends, String amount)
 			throws SibsException, AccountException, OperationException {
-		if (this.friendsMap.size() > Integer.parseInt(numberOfFriends)) {
+		int nrFriends = Integer.parseInt(numberOfFriends);
+		if (this.friendsMap.size() > nrFriends) {
 			System.out.println("Oh no! Too many friends.");
 			return;
-		} else if (this.friendsMap.size() < Integer.parseInt(numberOfFriends)) {
+		} else if (this.friendsMap.size() < nrFriends) {
 			System.out.println("Oh no! One friend is missing.");
 			return;
 		} else {
-			for (String val : this.friendsMap.values()) {
-				totalAmount += Integer.parseInt(val);
-			}
+			totalAmount = this.friendsMap.values().stream().mapToInt(v -> Integer.parseInt(v)).sum();
 			if (Integer.parseInt(amount) == totalAmount) {
 				for (String phoneNumber : this.friendsMap.keySet()) {
 					Account account = (services.getAccountByIban(MbWay.mbWayClients.get(phoneNumber)));
 					if (account.getBalance() < Integer.parseInt(this.friendsMap.get(phoneNumber))) {
 						System.out.println("Oh no! One of your friends does not have money to pay!");
 						return;
-					} else {
-						if (!(MbWay.mbWayClients.get(phoneNumber).equals(targetIban))) {
-							mbwayTransferController.mbway_transfer(phoneNumber, targetPhoneNumber,
-									this.friendsMap.get(phoneNumber));
-						}
+					} else if (!(MbWay.mbWayClients.get(phoneNumber).equals(targetIban))) {
+						mbwayTransferController.mbway_transfer(phoneNumber, targetPhoneNumber,
+								this.friendsMap.get(phoneNumber));
 					}
+
 				}
 				System.out.println("Bill payed successfully!");
 			} else {
