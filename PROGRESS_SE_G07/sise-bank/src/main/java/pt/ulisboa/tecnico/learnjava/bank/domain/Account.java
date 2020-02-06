@@ -42,11 +42,7 @@ public abstract class Account {
 	}
 
 	public void deposit(int amount) throws AccountException {
-		if (this.inactive) {
-			throw new AccountException(amount);
-		}
-
-		if (amount <= 0) {
+		if (this.inactive || amount <= 0) {
 			throw new AccountException(amount);
 		}
 		this.balance = this.balance + amount;
@@ -54,23 +50,15 @@ public abstract class Account {
 	}
 
 	public void withdraw(int amount) throws AccountException {
-		if (this.inactive) {
+		if (this.inactive || amount <= 0) {
 			throw new AccountException(amount);
-		}
-
-		if (amount <= 0) {
-			throw new AccountException();
 		}
 
 		this.balance = this.balance - amount;
 	}
 
 	public void inactive(CheckingAccount checking) throws AccountException {
-		if (this.isInactive()) {
-			throw new AccountException();
-		}
-
-		if (checking != null && this.client != checking.getClient()) {
+		if (this.isInactive() || (checking != null && this.client != checking.getClient())) {
 			throw new AccountException();
 		}
 
