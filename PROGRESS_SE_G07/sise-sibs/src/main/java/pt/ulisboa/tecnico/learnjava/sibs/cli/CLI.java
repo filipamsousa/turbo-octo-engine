@@ -8,6 +8,7 @@ import pt.ulisboa.tecnico.learnjava.bank.domain.Client;
 import pt.ulisboa.tecnico.learnjava.bank.exceptions.AccountException;
 import pt.ulisboa.tecnico.learnjava.bank.exceptions.BankException;
 import pt.ulisboa.tecnico.learnjava.bank.exceptions.ClientException;
+import pt.ulisboa.tecnico.learnjava.bank.services.Services;
 import pt.ulisboa.tecnico.learnjava.sibs.exceptions.OperationException;
 import pt.ulisboa.tecnico.learnjava.sibs.exceptions.SibsException;
 
@@ -19,6 +20,7 @@ public class CLI {
 
 	public static void main(String[] args)
 			throws BankException, ClientException, AccountException, SibsException, OperationException {
+		Services services = new Services();
 		CLI cli = new CLI();
 		Scanner reader = new Scanner(System.in);
 		String command = reader.next();
@@ -41,7 +43,7 @@ public class CLI {
 				mbWayController.confirm_mbway(reader.next(), reader.next());
 			} else if (command.startsWith("mbway-transfer")) {
 				mbwayTransferController mbWayController = new mbwayTransferController();
-				mbWayController.mbway_transfer(reader.next(), reader.next(), reader.next());
+				mbWayController.mbway_transfer(services, reader.next(), reader.next(), reader.next());
 			} else if (command.startsWith("mbway-split-bill")) {
 				mbWaySplitBillController mbWayController = new mbWaySplitBillController();
 				String numberOfFriends = reader.next();
@@ -54,7 +56,7 @@ public class CLI {
 					mbWayController.addFriend(mbWayController.friend(phoneNumber, value), value);
 					command = reader.next();
 				}
-				mbWayController.mbwaySplitBill(numberOfFriends, amount);
+				mbWayController.mbwaySplitBill(services, numberOfFriends, amount);
 			}
 			command = reader.next();
 		}

@@ -7,11 +7,10 @@ import pt.ulisboa.tecnico.learnjava.sibs.exceptions.OperationException;
 import pt.ulisboa.tecnico.learnjava.sibs.exceptions.SibsException;
 
 public class mbwayTransferController {
-	Services services = new Services();
-	Sibs sibs = new Sibs(100, services);
 
-	public void mbway_transfer(String sourcePhoneNumber, String targetPhoneNumber, String amount)
+	public void mbway_transfer(Services services, String sourcePhoneNumber, String targetPhoneNumber, String amount)
 			throws SibsException, AccountException, OperationException {
+		Sibs sibs = new Sibs(100, services);
 		if (MbWay.mbWayClients.containsKey(sourcePhoneNumber) && MbWay.mbWayClients.containsKey(targetPhoneNumber)) {
 			String sourceIban = MbWay.mbWayClients.get(sourcePhoneNumber);
 			String targetIban = MbWay.mbWayClients.get(targetPhoneNumber);

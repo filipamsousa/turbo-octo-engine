@@ -11,19 +11,21 @@ import pt.ulisboa.tecnico.learnjava.bank.exceptions.ClientException;
 public class Client {
 	private final Set<Account> accounts = new HashSet<Account>();
 
-	private final Bank bank;
-	private final String firstName;
-	private final String lastName;
-	private final String nif;
-	private final String phoneNumber;
-	private final String address;
+	private Bank bank;
+	private String firstName;
+	private String lastName;
+	private String nif;
+	private String phoneNumber;
+	private String address;
 	private int age;
 	public Integer mbwayCode;
+	private IdCard idCard;
 	String mbwayState;
 
 	public Client(Bank bank, String firstName, String lastName, String nif, String phoneNumber, String address, int age)
 			throws ClientException {
-		checkParameters(bank, nif, phoneNumber, age);
+		checkBankAndPhoneNumber(bank, phoneNumber);
+		checkNifAndAge(nif, age);
 
 		this.bank = bank;
 		this.firstName = firstName;
@@ -36,6 +38,11 @@ public class Client {
 		this.mbwayState = "Inactive";
 
 		bank.addClient(this);
+	}
+
+	public Client(Bank bank, IdCard idCard) {
+		this.bank = bank;
+		this.idCard = idCard;
 	}
 
 	public String getMbwayState() {
@@ -54,9 +61,14 @@ public class Client {
 		this.mbwayCode = mbwayCode;
 	}
 
-	private void checkParameters(Bank bank, String nif, String phoneNumber, int age) throws ClientException {
-		if (age < 0 || nif.length() != 9 || !nif.matches("[0-9]+") || phoneNumber.length() != 9
-				|| !phoneNumber.matches("[0-9]+") || bank.getClientByNif(nif) != null) {
+	private void checkBankAndPhoneNumber(Bank bank, String phoneNumber) throws ClientException {
+		if (phoneNumber.length() != 9 || !phoneNumber.matches("[0-9]+") || bank.getClientByNif(nif) != null) {
+			throw new ClientException();
+		}
+	}
+
+	public void checkNifAndAge(String nif, int age) throws ClientException {
+		if (age < 0 || nif.length() != 9 || !nif.matches("[0-9]+")) {
 			throw new ClientException();
 		}
 	}
