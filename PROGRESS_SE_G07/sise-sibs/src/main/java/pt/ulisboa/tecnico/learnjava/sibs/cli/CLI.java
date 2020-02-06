@@ -37,10 +37,10 @@ public class CLI {
 				cli.exit();
 			} else if (command.startsWith("associate-mbway")) {
 				associateMbWayController mbWayController = new associateMbWayController();
-				mbWayController.associate_mbway(reader.next(), reader.next());
+				mbWayController.associate_mbway(services, reader.next(), reader.next());
 			} else if (command.startsWith("confirm-mbway")) {
 				confirmMbwayController mbWayController = new confirmMbwayController();
-				mbWayController.confirm_mbway(reader.next(), reader.next());
+				mbWayController.confirm_mbway(services, reader.next(), reader.next());
 			} else if (command.startsWith("mbway-transfer")) {
 				mbwayTransferController mbWayController = new mbwayTransferController();
 				mbWayController.mbway_transfer(services, reader.next(), reader.next(), reader.next());

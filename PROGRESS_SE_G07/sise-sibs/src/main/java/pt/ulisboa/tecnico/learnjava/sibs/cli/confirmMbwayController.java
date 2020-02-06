@@ -3,10 +3,8 @@ package pt.ulisboa.tecnico.learnjava.sibs.cli;
 import pt.ulisboa.tecnico.learnjava.bank.services.Services;
 
 public class confirmMbwayController {
-	Services services;
 
-	public void confirm_mbway(String phoneNumber, String code) {
-		services = new Services();
+	public void confirm_mbway(Services services, String phoneNumber, String code) {
 		if (MbWay.mbWayClients.containsKey(phoneNumber)) {
 			if (services.getAccountByIban(MbWay.mbWayClients.get(phoneNumber)).getClient().getMbwayCode().toString()
 					.equals(code)) {
